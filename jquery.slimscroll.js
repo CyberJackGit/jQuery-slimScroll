@@ -4,6 +4,7 @@
  *
  * Version: 1.3.8
  *
+ * This is a custom CyberJack version: https://github.com/CyberJackGit/jQuery-slimScroll
  */
 (function($) {
 
@@ -76,7 +77,10 @@
         borderRadius: '7px',
 
         // sets border radius of the rail
-        railBorderRadius : '7px'
+        railBorderRadius : '7px',
+
+        // initially show bar
+        initiallyShowBar: true
       };
 
       var o = $.extend(defaults, options);
@@ -294,7 +298,7 @@
         });
 
         // set up initial height
-        getBarHeight();
+        getBarHeight(!o.initiallyShowBar);
 
         // check start position
         if (o.start === 'bottom')
@@ -399,14 +403,14 @@
           }
         }
 
-        function getBarHeight()
+        function getBarHeight(forceHide)
         {
           // calculate scrollbar height and make sure it is not too small
           barHeight = Math.max((me.outerHeight() / me[0].scrollHeight) * me.outerHeight(), minBarHeight);
           bar.css({ height: barHeight + 'px' });
 
           // hide scrollbar if content is not long enough
-          var display = barHeight == me.outerHeight() ? 'none' : 'block';
+          var display = (forceHide || barHeight == me.outerHeight()) ? 'none' : 'block';
           bar.css({ display: display });
         }
 
@@ -456,7 +460,7 @@
                 bar.fadeOut('slow');
                 rail.fadeOut('slow');
               }
-            }, 1000);
+            }, 500);
           }
         }
 
